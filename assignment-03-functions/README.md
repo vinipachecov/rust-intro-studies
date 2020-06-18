@@ -1,0 +1,1 @@
+1. Find factorial of a nubmer using function
