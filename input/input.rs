@@ -5,5 +5,5 @@ fn main() {
     println!("Enter a string");
     io::stdin().read_line(&mut a).expect("Failed");
     let a:String = a.trim().parse().expect("Failed parsing");
-    println!("{} World",a);    
+    println!("Value printed: {}",a);    
 }
