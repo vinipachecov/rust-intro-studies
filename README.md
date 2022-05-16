@@ -198,3 +198,35 @@ fn main() {
 
 read_line must receive a mutable reference of the variable, so it can store the user input into it.
 The method also is chained with a expect method to catch possible errors.
+
+## Conditional statements
+
+### If else
+
+if else statements in rust doesn't require parenthesis in its syntax:
+
+```rs
+let a: i32 = 10;
+if a < 20 {
+    println!("Lower than 20!");
+} else {
+    println!("Bigger than 20!");
+}
+```
+
+### If let
+Similar to ternary expressions we can use if statements while assigning values to a variable:
+
+```rs
+let result = if 10 < 5 {
+    println!("Assigning result var with value: 5");
+    // last line should contain the value to be assigned
+    5
+} else {
+    // last line should contain the value to be assigned
+    println!("Assigning result var with value: 10");
+    10
+// here the last curly brace should receive a semi-colon.
+};
+```
+
