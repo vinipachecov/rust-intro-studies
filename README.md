@@ -339,4 +339,23 @@ println!("{}", tuple.0)
 // this will print 4.9
 println!("{}", tuple.1)
 ```
+## Arrays
+
+- Collection of values
+- All values must be of same type (different than tuples)
+- Length is fixed (similar to tuples)
+- can be accessed by indexes starting from 0
+
+Syntax:
+```rs
+let a = [1,2,3,5];
+let b: [i32;5] = [1,2,3,4,5];
+let c: [i32;5] = [0;5];
+
+// prints the whole array!
+println!("{:?}", b);
+```
+
+
+
 

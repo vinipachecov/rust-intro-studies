@@ -18,7 +18,8 @@ fn print_array(x: [i32;5]) {
     // for n in 0 .. 5 {
     //     println!("{}", x[n]);
     // }
-    for n in x.iter() {
+    
+    for n in x.iter() {        
         println!("{}", n);
     }
 
