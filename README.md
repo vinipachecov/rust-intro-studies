@@ -230,3 +230,113 @@ let result = if 10 < 5 {
 };
 ```
 
+## Loops
+
+### Loop
+Similar to while true:
+```rs
+fn main() {
+    let mut counter = 0;
+    loop {
+        println!("Counter value {}", counter);
+        counter += 1;
+        if (counter == 10) {
+            break;
+        }
+
+    }
+}
+```
+### While loop
+
+```rs
+fn main() {
+    let mut counter = 0;
+    while counter != 10 {
+        println!("Counter value {}", counter);
+        counter += 1;
+    }
+}
+```
+
+### For loop
+
+```rs
+fn main() {    
+    for counter in 0 .. 10 {
+        println!("Counter value {}", counter);        
+    }     
+}
+```
+
+## Functions
+
+Functions in rust can be declared:
+
+- no arguments and no return type
+```rs
+fn function_name() {
+    // function body
+}
+```
+- multiple arguments and no return type
+```rs
+fn function_name(arguments list) {
+    // function body
+}
+```
+- multiple arguments and one return type
+```rs
+fn function_name(arguments list) -> return_type {
+    // function body
+}
+```
+- multiple arguments and multiple return types
+```rs
+fn function_name(arguments list) -> (return_type, return_type2) {
+    // function body
+}
+```
+- Function inside function
+```rs
+fn function_name() {
+   fn fun_function() {
+       // statements here
+   }
+}
+```
+
+### Function return statement 
+In rust, return statements can be explicit:
+
+```rs
+fn add(a: i32, b:i32) {
+    return a + b;
+}
+fn main() {
+    println!("{}", add(1,1));
+}
+```
+
+## Tuples in Rust
+
+Tuples is a compound Datatype. Differently than scalar types where you have only, i.e i32, in tuples you can store different types in the same variable (tuple).
+
+Tuples have a fixed length and cannot grow or shrink.
+```rs
+let tuple: (i32, f64, u8) = (324,4.9, 22)
+```
+
+Tuples can be accessed by using indexes (which start counting from 0): 
+```rs
+let tuple: (i32, f64, u8) = (324,4.9, 22)
+// this will print 22
+println!("{}", tuple.2)
+
+// this will print 324
+println!("{}", tuple.0)
+
+// this will print 4.9
+println!("{}", tuple.1)
+```
+
