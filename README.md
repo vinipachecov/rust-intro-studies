@@ -356,6 +356,189 @@ let c: [i32;5] = [0;5];
 println!("{:?}", b);
 ```
 
+## Ownership
+
+- One of Rust most unique feature.
+- It enables Rust to make memory safety guarantees without needing a garbage collector.
+- how rust lays data out in memory.
 
 
+- Each value in rust has a variable that's called its owner
+- there can only be one owner at a time.
+- When the owner goes out of scope the value will be dropped.
 
+### Memory management with Stack
+Just like in normal stacks it works as "last in, first out."
+<i>The rust stack stores values in the order it gets them and removes them in the opposite order</i>
+
+- Adding an item in the stack is a push operation
+- Removing an item from the stack is a pop operation
+
+Stacks must use a known and fixed size. <strong>Stacks doesn't grow at runtime.</strong>
+
+### Memory management with Heaps
+Heaps can store data with a size unknown at compile time or a size that might change during it.
+
+Example:
+String -> push_str(): You don't know how much string memory slots will be required before this operation occurs. In this situation a Stack will not be possible to be used since it requires a fixed ammount of memory known at compile time. 
+
+<strong>Soluion</strong>: Heap, which is less "organized"
+Behind the scenes, the operating system will find a memory slot big enough to store the requested amount of space and use it.
+
+When in use, the heap returns a pointer, i.e a address of the allocated space.
+Pushing values into a heap is not considered allocating, since it is already allocated.
+### Stack vs Heap
+
+Stack it is fast because of the way it access the data.
+Stack it is fast because of the fixed known memory ammount. 
+
+Heap when allocating a large amount of space can take time.
+
+## Variable scope
+
+```rs
+fn main() {
+    let a = 10;
+}
+
+fn fun() {
+    a = 20 // error
+}
+```
+
+## Memory allocation
+
+String type in order to support a mutable, growable piece of text, we need to allcoate na amount of memory on the heap, unkown at compile time, to hold the contents.
+- The memory must be requested from the operating system at runtime.
+- We need a way of returning this memory to the operating system when we're done with our String.
+
+
+Languages with a garbage collector(GC), the GC keeps track and cleans up memory that isn't beign used anymore, and we don't need to think about it.
+
+Without a GC, it's our responsibility to identify when memory is no longer being used and call code to explicitly return it.
+
+Rust takes a different path: the memory is automatically returned once the variable that owns it goes out of scope.
+
+Example:
+
+```rs
+fn main() {
+    let s = String::from("hello"); //s is valid from this point forward
+    // do stuff with s
+}
+//this scope is now over, and s is no longer valid
+```
+
+When a variable goes out of scope, Rust calls a special function for us. this function is called drop, Rust calls drop automatically at the closing bracket.
+
+### Double free memory problem in ownership
+
+This is a problem related to more than one variable having æccess to the same memory space.
+With this situation an error called "double free memory" can happens and lead to a bug or crash in the program. 
+To solve this rust uses the "move" pattern which avoids data (memory space) that are not static to have multiple ownership.
+
+```rs
+fn main() {
+    let a = String::from("hello"); 
+    let b = a;
+    println!("{} {}", b, a);
+    //  value moved here
+    //  |     println!("{} {}", b, a);
+    // 
+```
+
+If we need to copy a variable we will need to copy the data into another variable:
+
+```rs
+fn working_move() {
+    let a = String::from("hello"); 
+    let b = a.clone();
+    println!("{} {}", b, a);
+    //  value moved here
+    //  |     println!("{} {}", b, a);
+    //   |                          ^ value borrowed here after move
+}
+```
+
+Note that this doens't happen with stack-only data (variables that live in the stack memory) which has fixed memory size in compile time.
+
+## Memory references
+
+Rust allows users to have mutable and immutable references. However, it does not allow more than once mutable reference per scope:
+
+```rs
+fn main() {
+    let mut s1 = String::from("Hello")
+    let mut s2 = String::from("World") // rust compiler will throw error here!
+}
+```
+
+Same will happen if an immutable reference is attemp to be passed to as mutable:
+
+```rs
+fn main() {
+    let s = String::from("Hello");
+    let s2 = &s;
+    let s3 = & mut s; // cannot borrow as mutable | error here
+    println!("{}", s3);
+}
+```
+
+### Dangle References
+
+```rs
+fn main() {
+    let s = dangle();
+}
+
+fn dangle() -> &String {
+    let d = String::from("world");
+    &d;
+}// when out of scope, variable d will be dropped and its content will also 
+// be deleted.
+```
+
+### Slices
+Slice lets you reference contiguous sequence of elements. 
+
+Example:
+```rs
+fn main() {
+    let a = String::from("Hello World");
+
+    // 'Hello '
+    let r1 = &a[0 .. 5];
+
+    let r2 = &a[0 ..=5];
+
+    let r3 = &a[ .. 5];
+
+    let r4 = &a[0 ..];
+
+    let r5 = &a[..];
+}
+```
+
+## Cargo, Rust package manager
+Cargo is the package manager for Rust, so any time there a need for using an external library, cargo will be used.
+Some useful commands:
+
+New project
+- cargo new proj_name --bin 
+
+New library
+- cargo new proj_name --lib
+
+Build project
+- cargo build
+
+Check project compilation
+- cargo check
+
+Run project
+- cargo run
+
+Cargo also simplify the usage of rust across different OS because the commands are the same.
+
+## Crates
+Crate is a package of Rust code. Itcan be a binary or a library depending the cargo new flag.

@@ -1,4 +1,4 @@
-fn main () {
+fn main() {
     let mut s = String::from("hello");
     take(s);
     s = println!("{}",s);    
@@ -7,7 +7,7 @@ fn main () {
 //   |                   ^ value borrowed here after move
 }
 
-fn take(s: String) ->String {
+fn take(s: String) -> String {
     println!("{}", s);
     return s;
 }
