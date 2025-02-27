@@ -542,3 +542,288 @@ Cargo also simplify the usage of rust across different OS because the commands a
 
 ## Crates
 Crate is a package of Rust code. Itcan be a binary or a library depending the cargo new flag.
+
+## Structure
+A struct or _structure_, is a custom data type that lets you name and package together multiple related values.
+
+tuples and structs are different but similar.
+
+Like tuples, the pieces of a struct can be of different types.
+
+Unlike with tuples, you'll name each pice of data so it`s clear what the values mean.
+
+As a result of these names, structs are more flexible than tuples.
+    * this way you don't have to rely on th order of the data to specify or access values.
+
+```rs
+// use camel case for naming structs
+struct User {
+    // property_name: type;
+    username: String;
+    email: String;
+}
+
+fn main() {
+    let user1 = User {
+        email: String::from("a@a.com"),
+        username: String::from("My first name")
+    };
+
+    println!("{}", user1.email);
+}
+```
+
+To print a struct entire object 
+
+```rs
+// use camel case for naming structs
+#[derive(Debug)]
+struct User {
+    // property_name: type;
+    username: String;
+    email: String;
+}
+
+fn main() {
+    let user1 = User {
+        email: String::from("a@a.com"),
+        username: String::from("My first name")
+    };
+
+    // note the :? inside the curly brackets
+    println!("{:?}", user1);
+}
+```
+
+### Dot notation to access properties 
+
+To get a specific value from a struct, we can use dot notation.
+
+For example:
+
+```rs
+struct User {    
+    username: String;
+    email: String;
+}
+
+fn main() {
+    let user1 = User {
+        email: String::from("a@a.com"),
+        username: String::from("My first name")
+    };
+
+    // accessing only email prop
+    println!("{}", user1.email);
+}
+```
+
+Changing values from a struct:
+
+```rs
+struct User {    
+    username: String;
+    email: String;
+}
+
+fn main() {
+    let mut user1 = User {
+        email: String::from("a@a.com"),
+        username: String::from("My first name")
+    };
+    user.email = String::from("b@b.com"),
+
+    // accessing only email prop
+    println!("{}", user1.email);
+}
+```
+
+
+### Returning Instance from Function
+
+```rs
+#[derive(Debug)]
+struct User {    
+    age: i32
+}
+
+fn main() {
+    let user1  = build(20);
+    
+    println!("{:?}", user1);
+}
+
+fn build(age: i32) -> User {
+    User {
+        age: age
+    }
+}
+```
+
+### Field init Shorthand
+
+
+```rs
+#[derive(Debug)]
+struct User {    
+    age: i32
+}
+
+fn main() {
+    let user1  = build(20);
+    
+    println!("{:?}", user1);
+}
+
+fn build(age: i32) -> User {
+    User {
+        // shorthand where we don't need to set if a prop from a struct has the same name from another variable
+        age
+    }
+}
+```
+
+### Copying values from one struct to another without breaking ownership
+
+
+```rs
+#[derive(Debug)]
+struct User {    
+    age: i32
+}
+
+fn main() {
+    let user1  = build(20);
+    // this will break
+    // let user2  = build(user1.age);
+
+    let user2  = build(user1.age.clone());
+
+    
+    println!("{:?}", user1);
+}
+
+fn build(age: i32) -> User {
+    User {
+        age: age
+    }
+}
+```
+
+
+### Structure methods
+Methods are similar to functions: they are declared with the fn keyword and a name.
+
+They can have parameters and return a value.
+
+However, methods are different from function in that they are defined within the context of a struct
+
+Their first parameter is always self, which represents the instance of the struct.
+
+```rs
+#[derive(Debug)]
+struct Rectangle {    
+    width: u32,
+    height: u32,
+}
+
+impl Rectangle {
+    fn area(&self) -> u32 {
+        self.width * self.height
+    }
+
+// without & the self variable will receive (move) the value to it. Once the function returns
+// the struct value will be lost.
+    // fn area(self) -> u32 {
+    //     self.width * self.height
+    // }
+}
+
+fn main() {
+    let rect1 = Rectangle {
+        width: 100,
+        height: 200
+    }    
+
+    println!("{}", rect1.area());
+}
+```
+
+#### More parameters to struct methods
+
+
+```rs
+#[derive(Debug)]
+struct Rectangle {    
+    width: u32,
+    height: u32,
+}
+
+impl Rectangle {
+    fn can_hold(&self, other: &Rectangle) -> bool {
+        self.width > other.width && self.height > other.height
+    }
+
+}
+
+fn main() {
+    let rect1 = Rectangle {
+        width: 100,
+        height: 200
+    }; 
+    let rect2 = Rectangle {
+        width: 500,
+        height: 400
+    };   
+
+    let rect2 = Rectangle {
+        width: 50,
+        height: 40
+    };   
+
+    println!("Can rect1 hold rect2 ? {}", rect1.can_hold(&rect2));
+
+    println!("Can rect1 hold rect3 ? {}", rect1.can_hold(&rect3));
+}
+```
+
+#### Associated functions
+When we define a function within impl blocks that don't take self as a parameter. These are called associated functions.
+
+They are created associated to a struct.
+
+They are still functions, not methods, because they don't have an instance of the struct to work with.
+
+For example: 
+
+```rs
+String::from("")
+```
+
+Associated functions are often used for constructors that will return a new instance of the struct.
+
+```rs
+#[derive(Debug)]
+struct Rectangle {    
+    width: u32,
+    height: u32,
+}
+
+impl Rectangle {
+    fn build(width: u32, height: u32) -> Rectangle {
+        Rectangle { width, height }
+    }
+    fn square(size: u32) -> Rectangle {
+        Rectangle { width: size, height: size }
+    }
+}
+
+fn main() {
+    let rect1 = Rectangle::square(20);
+    let rect2 = Rectangle::build(10,30);
+
+    println!("{:?}", rect2);
+
+    println!("{}", rect1.area());
+}
+```
