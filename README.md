@@ -827,3 +827,155 @@ fn main() {
     println!("{}", rect1.area());
 }
 ```
+
+
+### Enums
+Enums allows to define a type by enumarting its possible values
+
+Example: having 2 types of IP addresses:
+- IPV4
+- IPV6
+
+```rs
+
+enum IpAddrKind {
+    V4,
+    V6
+}
+
+fn main() {
+    let a = IpAddrKind::V4;
+    let b = IpAddrKind::V6;
+
+    println!("{:?}", a);
+    println!("{:?}", b);
+}
+```
+
+
+### Storing values in enum
+
+Using a enum as a type for fields in a structure:
+
+```rs
+enum IpAddrKind {
+    V4,
+    V6
+}
+
+#[derive(Debug)]
+struct IpAddr {
+    kind: IpAddrKind,
+    address: String
+}
+
+
+fn main () {
+    let home = IpAddr {
+        kind: IpAddrKind::V4,
+        address: String::from("127.0.0.1",)
+    };
+
+    let loopback = IpAddr {
+        kind: IpAddrKind::V6,
+        address: String::from("::1"),        
+    };
+    println!("{:?}", home);
+    println!("{:?}", loopback);
+}
+```
+
+Another ways of using enums is to have predefined values 
+
+
+```rs
+enum DaysOfTheWeek {
+    Monday,
+    Tuesday,    
+    //....
+}
+```
+
+Using different types inside Enum:
+
+```rs
+enum IpAddr {
+    V4(String),
+    V6(String)
+}
+
+fn main() {
+    let home = IpAddr::V4(String::from("127.0.0.1"));
+    let loopback = IpAddr::V6(String::from("::1"));
+}
+```
+
+
+Using multiple different types inside Enum:
+
+```rs
+enum IpAddr {
+    V4(u8,u8,u8,u8),
+    V6(String)
+}
+
+fn main() {
+    let home = IpAddr::V4(String::from(127,0,0,1));
+    let loopback = IpAddr::V6(String::from("::1"));
+}
+```
+
+### Option Enum
+
+Option, which is an enum defined by the standard library.
+
+Option is used in many places because it encodes the very common scenario in which a value could be something or could be nothing.
+
+This feature can prevent bugs that are extremely common in other programming languages.
+
+For example NUll is not present in rust.
+
+Rust solution to Null -> Option
+
+As such, rust does not have nulls, but it does have an enum that can encode the concept of a value being present or absent.
+
+This enum is:
+```rs
+ enum Option<T> {
+    Some(T),
+    None
+ }
+ ```
+
+ By being included in the Rust prelude, it is allowed to be called in code without the normal enum syntax Option::Some.
+
+ ```rs
+fn main() {
+    let num = Some(5);
+    let text = Some("Hello");
+
+    println!("{:?} {:?}", num,  text);
+    // Some(5) Some("Hello")
+}
+```
+
+A program that would not compile:
+```rs
+// This program will not compile
+fn main() {
+    let num = None;
+    let text = None;
+
+    println!("{:?} {:?}", num,  text);
+}
+```
+Variables from Some will not inherit internal type properties
+```rs
+// This program will not compile
+fn main() {
+    let num = Some(5) + 5; // Compilation error here
+    let text = None;
+
+    println!("{:?} {:?}", num,  text);
+}
+```

@@ -1,9 +1,9 @@
-// fn main() {
-//      let num = Some(5);
-//      let text = Some("Hello");
+fn main() {
+     let num = Some(5);
+     let text = Some("Hello");
 
-//      println!("{:?} {:?}", num, text);
-// }
+     println!("{:?} {:?}", num, text);
+}
 
 // throws error
 // fn main() {
