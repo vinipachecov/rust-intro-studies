@@ -979,3 +979,136 @@ fn main() {
     println!("{:?} {:?}", num,  text);
 }
 ```
+
+
+### Match Control flow operator
+
+Match allows you to compare a value against a series of patterns and then 
+execute code based on which pattern matches.
+
+Think of a match expression as being like a coin sorting machine.
+
+Example:
+
+```rs
+
+enum Coin {
+    Penny,
+    Nickel,
+    Dime,
+    Quarter
+}
+
+// return an unsigned int for each coin value
+fn value_in_cents(c: Coin)-> u32 {
+    match c {        
+        Coin::Penny => 1, // this can be a whole scope on its on
+        Coin::Nickel => 5,
+        Coin::Dime => 10,
+        Coin::Quarter => 25,
+    }
+}
+```
+
+### Patterns that bind to values
+Another useful feature of match is that they can bind to the parts of the values that match the pattern. 
+
+```rs
+#[allow(dead_code)]
+enum Coin {
+    Penny,
+    Nickel,
+    Dime,
+    Quarter (UsState)
+}
+
+#[allow(dead_code)]
+#[derive(Debug)]
+enum UsState {
+    Alaska,
+    Arizona,
+}
+
+fn value_in_cents(c: Coin)-> u32 {
+    match c {        
+        Coin::Penny => 1, // this can be a whole scope on its on
+        Coin::Nickel => 5,
+        Coin::Dime => 10,
+        // Now the enum requires another value along to be used
+        Coin::Quarter(state) =>  {
+            println!("{:?}", state);
+            25
+        },
+    }
+}
+
+fn main() {
+    println!("{}", value_in_cents(Coin::Quarter(UsState::Alaska)))
+}
+```
+
+### Matching option enum
+
+```rs
+fn main() {
+    let five = Some(5);
+    let six = plus_one(five);
+    let none = plus_one(None);
+
+    println!("Six? {:?}", six);
+
+    println!("None? {:?}", none);
+}
+
+fn plus_one(x: Option<i32>) -> Option<i32> {
+    match x {
+        None => Nome
+        Some(i) => Some(i+1),
+    }
+}
+```
+
+### The _ Placeholder
+
+Not convering all variants of an enum will throw an error in compilation.
+A way to avoid this is to use the placeholder
+
+```rs
+fn main() {
+    let five = Some(5);
+    let six = plus_one(five);
+    let none = plus_one(None);
+
+    println!("Six? {:?}", six);
+
+    println!("None? {:?}", none);
+}
+
+fn plus_one(x: Option<i32>) -> Option<i32> {
+    // Not covering all options lead to errors!
+    // match x {    // 
+    //     Some(i) => Some(i+1),
+    // }
+
+    // Using _ placeholder will prevent compilation error
+    // any value that is not Some(i) will return None
+    match x {
+        _ => Nome
+        Some(i) => Some(i+1),
+    }
+}
+```
+
+### Control flow with if let
+
+```rs
+fn main() {
+    let some_u8 = Some(3);
+
+    if let Some(3) = some_u8 {
+        println!("Three inside some!");
+    } else if let Some(4) = some_u8{
+        println!("4 Inside some!");
+    }
+}
+```
