@@ -1112,3 +1112,103 @@ fn main() {
     }
 }
 ```
+
+### Modules
+
+Example of moving code to new files
+
+
+original lib.rs:
+```rs
+mod client {
+    fn connect() {
+        
+    }
+}
+
+mod network {
+    fn connect() {
+
+    }
+    mod server() {
+        
+    }
+}
+```
+
+with client.rs:
+```rs
+fn connect() {
+    
+}
+```
+
+```rs
+// no need for declaration now
+mod client;
+mod network {
+    fn connect() {
+
+    }
+    mod server() {
+        
+    }
+}
+```
+
+
+with network file as well:
+network.rs
+
+server/mod.rs (because it will require more files check mod server declartion)
+```rs
+fn connect() {
+
+}
+mod server() {
+        
+    }
+```
+
+new lib.rs
+```rs
+// no need for declaration now
+mod client;
+mod network;
+```
+
+
+with server/server.rs:
+network.rs
+
+server/mod.rs (because it will require more files check mod server declartion)
+
+
+server/mod.rs
+```rs
+fn connect() {
+
+}
+mod server;
+```
+
+server/server.rs
+```rs
+fn connect() {
+    
+}
+```
+
+client.rs
+```rs
+fn connect() {
+    
+}
+```
+
+new lib.rs
+```rs
+// no need for declaration now
+mod client;
+mod network;
+```
