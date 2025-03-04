@@ -1296,3 +1296,130 @@ fn main() {
     let green = Green;
 }
 ```
+
+## Collections
+
+Data collections are of great use:
+
+* vectores
+* strings
+* hash maps
+
+### Vectors
+Vectors can only store values of the same type.
+
+```rs
+fn main() {
+    let v: Vec<i32> = Vec::new();
+    v.push(50);
+}
+```
+
+```rs
+fn main() {
+    let v = Vec::new();
+    v.push(50);    
+}
+```
+
+```rs
+fn main() {
+    let v = vec![1,2,3];
+    v.push(50);    
+}
+```
+
+### Reading elements from vector
+
+```rs
+fn main() {
+    let v1 = vec![1,2,3];
+
+    println!("{}", v.get(0));
+    println!("{}", v[0]); // unsafe
+    // println!("{}", v[999]); // unsafe
+    println!("{}", v.get(999)); // safe data access -> return none
+}
+```
+
+### Looping vectors
+
+### Reading elements from vector
+
+```rs
+fn main() {
+    let v1 = vec![1,2,3];
+
+   for i in &v1 { // need to use &v otherwise value will
+//     be moved to v1
+    println("{}", i);
+   }
+
+    let mut v2 = vec![1,2,3];
+
+   for i in &mut v2 { 
+    i += 5 // now that mut was applied the change can happen
+    println("{}", i);
+   }
+}
+```
+
+### Storing multiple types in vector
+
+
+
+```rs
+enum SpreadSheet {
+    integer(i32),
+    Float(f64),
+    Text(String),
+}
+
+fn main() {
+    let row = vec![
+        SpreadSheet::Integer(3),
+        SpreadSheet::Float(3.4),
+        SpreadSheet::Text(String::from("Helo")),
+    ]
+
+    println!("{:?}", row);
+}
+```
+
+### String basic functions!
+
+```rs
+fn main() {
+    let a = 1;
+    let a_string = a.to_string();
+
+    println!("{}", s);
+}
+```
+
+push_str
+```rs
+fn main() {
+    let a = 1;
+    let mut a_string = a.to_string();
+
+    a_string.push_str(" Hello");
+    a_string.push_str(" O ");
+    println!("{}", s);
+}
+```
+
+### String concatenation and Format! macro
+
+```rs
+fn main() {
+    let s = String::from("Hellow"); 
+    let s2 = String::from("World");
+// to add we need to use the reference after second elem;
+    let s3 = s1 + &s2;
+
+    println!("{}", s3);
+    // s1 value is lost and no longer available
+}
+```
+
