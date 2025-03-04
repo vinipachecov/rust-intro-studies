@@ -1212,3 +1212,87 @@ new lib.rs
 mod client;
 mod network;
 ```
+
+### Controlling visibility with Pub
+
+Considering the previous example:
+
+```rs
+
+/**
+ * //
+ * inside lib.rs
+ * pub mod client;
+ * mod network;
+ * 
+ * //
+ * inside client.rs
+ * 
+ * pub fn connect() {}
+ * //
+ * 
+ * inside server.rs * 
+ * pub fn connect() {}
+*/
+
+extern crate communicator;
+
+fn main() {
+    communicator::client::connect();
+}
+```
+
+
+### Refering names to different modules
+
+```rs
+pub mod a {
+    pub mod series {
+        pub mod of {
+            pub fn nested_module() {}
+        }
+    }
+}
+
+fn main() {
+    // this should work!
+    a::series::of::nested_module();
+}
+```
+
+Using the keyword use:
+
+```rs
+pub mod a {
+    pub mod series {
+        pub mod of {
+            pub fn nested_module() {}
+        }
+    }
+}
+
+// import directly the function from a nested module
+use a::series::of::nested_module;
+
+fn main() {
+    // this should work as well!
+    nested_module();
+}
+```
+
+the same will applies to enums
+
+```rs
+#[allow(unused_variables)]
+enum TrafficLight {
+    Red, Yellow, Green
+}
+
+use TrafficLight::*;
+
+fn main() {
+    let red = Red;
+    let yellow = Yellow;
+    let green = Green;
+}
+```
