@@ -1423,3 +1423,140 @@ fn main() {
 }
 ```
 
+Example using format macro:
+
+```rs
+fn main() {
+    let s = String::from("Hellow"); 
+    let s2 = String::from("World");
+// to add we need to use the reference after second elem;
+    let s3 = format!("{} {}", s,s2);
+    // s1 and s2 are already moved to s3
+
+
+    println!("{}", s3);
+    //Hello World
+}
+```
+
+
+### Accessing characters in a string
+
+```rs
+fn main() {
+    let s1 = String::from("Hello");
+
+    // error
+    // let n = s1[0];
+
+    //  this will work
+    // let n = &s1[o .. 1];
+
+    // 
+    for c in s1.chars() {
+        println!("{}", &c);
+    }
+
+    // also work for static string
+    for c in "Hello".chars() {
+        println!("{}", &c);
+    }
+}
+```
+
+### HashMap
+
+Hashmap are maps with a key with unique key associated with a value.
+
+methods:
+- new -> new HashMap
+- insert -> (key, value) to add new values to a hash map
+
+```rs
+use std::collections::HashMap;
+
+fn main() {
+    let mut scores = HashMap::new();
+
+    scores.insert("Blue", 10);
+    scores.insert("Red", 20);
+}
+```
+
+### Using collect method to construct hash map
+
+From two vectors 
+
+```rs
+fn main() {
+    let team = vec!["Blue", "Red"];
+    let score = vec![10, 20];
+
+    // hash map with any key and value created
+    let scores: HashMap<_, _> = team.iter()
+        .zip(score.iter())
+        .collect();
+
+    println!("{:?}", scores);
+}
+```
+
+### Accessing value in a hash map
+
+```rs
+use std::collections::HashMap;
+
+fn main() {
+    let mut scores = HashMap::new();
+    scores.insert("Blue");
+    scores.insert("Red");
+
+    let score = scores.get("Blue");
+    let invalid_score = scores.get("Yellow");
+    println!("{:?}", score);
+    println!("{:?}", invalid_score);    
+
+    // looping through
+    for (key,value) in &scores {
+        println!("{} {}", key, value);
+    }
+}
+```
+
+### Updating a hash map
+
+```rs
+use std::collections::HashMap;
+
+fn main() {
+    let scores = HashMap::new();
+    scores.insert("Red", 10);
+    scores.insert("Blue", 50);
+    scores.insert("Red", 20); // overwritting a value
+
+    scores.entry("Red").or_insert(40);
+
+    println!("{:?}", score);
+
+}
+```
+
+## Error handling
+
+```rs
+fn main() {
+    // throw error;
+    panic!("hey");
+}
+```
+
+
+### Unrecoverable error
+panic will throw errors that do not recover just like accessing invalid memory
+```rs
+fn main() {    
+    let a = [1,2,3];
+    // throw error;
+    a[100];
+}
+```
